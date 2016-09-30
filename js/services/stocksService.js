@@ -1,5 +1,5 @@
 "use strict";
-app.factory('StocksService', ['$http', 'dateService', '_', function($http, dateService, _){
+app.factory('StocksService', ['$http', 'dateService', '_', '$q', function($http, dateService, _, $q){
 
 	var _stocks = {};
 	var stub = {};
@@ -9,12 +9,44 @@ app.factory('StocksService', ['$http', 'dateService', '_', function($http, dateS
 
   var _stockSymbols = ['AAPL', 'GOOG', 'PHM', 'ICON', 'PCLN', 'PM', 'MO', 'GPOR', 'AREX', 'ATW', 'CMO', 'LTC', 'RNR', 'GILD'];
 
-	var _populateAllStocks = function(){
-     _stockSymbols.forEach(function(el){
-        _populateStock(el);
-     });
-     return _stocks;
+	var _populateAllStocks = function() {
+    var requests = [];
+    _stockSymbols.forEach(function(el){
+      requests.push(_populateStock(el));
+    });
+    return $q.all(requests).then(function(response) {
+      response.forEach(function(stockResponse) {
+        _parseResponse(stockResponse)
+      });
+      _buildDatesCollection();
+      return _stocks;
+		}, function(error) {
+      console.log(error);
+    });
   };
+
+  var _parseResponse = function(stockResponse) {
+    stockResponse.data.query.results.quote.forEach(function(stock) {
+      _buildStockObject(stock);
+      _buildDatesArr(stock);
+      _buildStockDates(stock);
+    });
+  };
+
+  var _buildDatesCollection = function() {
+    var sortedDates = Object.keys(_dates).sort(function(a,b) {
+      var aDate = new Date(a);
+      var bDate = new Date(b);
+      if (aDate > bDate) {
+        return 1;
+      } else if (aDate < bDate) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    angular.copy(sortedDates, _dateCollection);
+  }
 
   var _buildStockString = function(symbol){
     var thing = 'http://query.yahooapis.com/v1/public/yql?q= '
@@ -33,26 +65,6 @@ app.factory('StocksService', ['$http', 'dateService', '_', function($http, dateS
 		return $http({
 			url: _buildStockString(symbol),
 			method: "GET"
-		})
-		.then(function(response){
-			response.data.query.results.quote.forEach(function(stock) {
-        _buildStockObject(stock);
-        _buildDatesArr(stock);
-        _buildStockDates(stock);
-      });
-      var sortedDates = Object.keys(_dates).sort(function(a,b) {
-        var aDate = new Date(a);
-        var bDate = new Date(b);
-        if (aDate > bDate) {
-          return 1;
-        } else if (aDate < bDate) {
-          return -1;
-        } else {
-          return 0;
-        }
-      })
-      angular.copy(sortedDates, _dateCollection)
-      return _stocks;
 		});
 	};
 

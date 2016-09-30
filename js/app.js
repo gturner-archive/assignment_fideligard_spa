@@ -31,10 +31,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         date: function(dateService) {
           return dateService.getDate();
         },
-        stocks: function(StocksService){
+        stocks: function(StocksService) {
           return StocksService.all();
         },
-        dates: ['stocks', 'StocksService', function(stocks, StocksService){
+        dates: ['stocks', 'StocksService', function(stocks, StocksService) {
           return StocksService.getDateCollection();
         }]
       }
