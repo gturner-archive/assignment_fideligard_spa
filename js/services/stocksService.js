@@ -11,13 +11,13 @@ app.factory('StocksService', ['$http', 'dateService', '_', function($http, dateS
 
 	var _populateAllStocks = function(){
      _stockSymbols.forEach(function(el){
-      console.log(el);
         _populateStock(el);
      });
+     return _stocks;
   };
 
   var _buildStockString = function(symbol){
-    var thing = 'http://query.yahooapis.com/v1/public/yql?q= ' 
+    var thing = 'http://query.yahooapis.com/v1/public/yql?q= '
     + 'select * from   yahoo.finance.historicaldata '
     + 'where  symbol    = ' + '"' + symbol + '"' + ' '
     + 'and    startDate = "2015-01-01" '
@@ -29,8 +29,7 @@ app.factory('StocksService', ['$http', 'dateService', '_', function($http, dateS
     return thing;
   };
 
-  var _populateStock = function(symbol){
-    console.log(_buildStockString(symbol));
+  var _populateStock = function(symbol) {
 		return $http({
 			url: _buildStockString(symbol),
 			method: "GET"

@@ -1,7 +1,7 @@
 "use strict";
 app.directive('stockTicker', ['StocksService', 'dateService', function(StocksService, dateService) {
 	return{
-		restrict: "E",
+		restrict: "A",
 		templateUrl: 'js/templates/stockTicker.html',
 		scope: {
 			stock: "=",
@@ -14,9 +14,9 @@ app.directive('stockTicker', ['StocksService', 'dateService', function(StocksSer
       scope.thirtyDay = StocksService.thirtyDayAverage(scope.symbol);
       scope.sevenDay = StocksService.sevenDayAverage(scope.symbol);
     });
-      scope.currentPrice = StocksService.currentPrice(scope.symbol);
-      scope.thirtyDay = StocksService.thirtyDayAverage(scope.symbol);
-      scope.sevenDay = StocksService.sevenDayAverage(scope.symbol);
+    scope.currentPrice = StocksService.currentPrice(scope.symbol);
+    scope.thirtyDay = StocksService.thirtyDayAverage(scope.symbol);
+    scope.sevenDay = StocksService.sevenDayAverage(scope.symbol);
     }
 	};
 }]);
