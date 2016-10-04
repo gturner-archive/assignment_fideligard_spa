@@ -1,1 +1,11 @@
-transactions.html
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Symbol</th>
+    <th>Type</th>
+    <th>Quantity</th>
+    <th>Price</th>
+  </tr>
+
+  <tr transaction-list ng-repeat="transaction in transactions" transaction="transaction"></tr>
+</table>

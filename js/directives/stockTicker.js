@@ -11,12 +11,14 @@ app.directive('stockTicker', ['StocksService', 'dateService', function(StocksSer
     scope.currentDate = dateService.getDate();
     scope.$watch('currentDate.index', function(){
     	scope.currentPrice = StocksService.currentPrice(scope.symbol);
-      scope.thirtyDay = StocksService.thirtyDayAverage(scope.symbol);
-      scope.sevenDay = StocksService.sevenDayAverage(scope.symbol);
+      scope.thirtyDay = StocksService.thirtyDayDelta(scope.symbol);
+      scope.sevenDay = StocksService.sevenDayDelta(scope.symbol);
+      scope.singleDay = StocksService.singleDayDelta(scope.symbol);
     });
     scope.currentPrice = StocksService.currentPrice(scope.symbol);
-    scope.thirtyDay = StocksService.thirtyDayAverage(scope.symbol);
-    scope.sevenDay = StocksService.sevenDayAverage(scope.symbol);
+    scope.thirtyDay = StocksService.thirtyDayDelta(scope.symbol);
+    scope.sevenDay = StocksService.sevenDayDelta(scope.symbol);
+    scope.singleDay = StocksService.singleDayDelta(scope.symbol);
     }
 	};
 }]);

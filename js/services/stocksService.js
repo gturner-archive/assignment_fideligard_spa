@@ -97,7 +97,7 @@ app.factory('StocksService', ['$http', 'dateService', '_', '$q', function($http,
     return _dateCollection;
   };
 
-  stub.sevenDayAverage = function(symbol) {
+  stub.sevenDayDelta = function(symbol) {
     var today;
     for (var i = 0; i < _stockDates[symbol].length; i++) {
       if (_stockDates[symbol][i] === _dateCollection[dateService.getDate().index]) {
@@ -105,14 +105,12 @@ app.factory('StocksService', ['$http', 'dateService', '_', '$q', function($http,
         break;
       }
     }
-    var avgPrice = 0;
-    for (var j = today - 6; j <= today; j++ ) {
-      avgPrice += Number(_stocks[symbol][_stockDates[symbol][j]].Close);
-    }
-    return Math.round(avgPrice / 7 * 100) / 100;
+    var currentPrice = Number(_stocks[symbol][_stockDates[symbol][today]].Close);
+    var oldPrice = Number(_stocks[symbol][_stockDates[symbol][today - 7]].Close);
+    return Math.round((currentPrice - oldPrice) * 100) / 100;
   };
 
-  stub.thirtyDayAverage = function(symbol) {
+  stub.thirtyDayDelta = function(symbol) {
     var today;
     for (var i = 0; i < _stockDates[symbol].length; i++) {
       if (_stockDates[symbol][i] === _dateCollection[dateService.getDate().index]) {
@@ -120,11 +118,22 @@ app.factory('StocksService', ['$http', 'dateService', '_', '$q', function($http,
         break;
       }
     }
-    var avgPrice = 0;
-    for (var j = today - 29; j <= today; j++ ) {
-      avgPrice += Number(_stocks[symbol][_stockDates[symbol][j]].Close);
+    var currentPrice = Number(_stocks[symbol][_stockDates[symbol][today]].Close);
+    var oldPrice = Number(_stocks[symbol][_stockDates[symbol][today - 30]].Close);
+    return Math.round((currentPrice - oldPrice) * 100) / 100;
+  };
+
+  stub.singleDayDelta = function(symbol) {
+    var today;
+    for (var i = 0; i < _stockDates[symbol].length; i++) {
+      if (_stockDates[symbol][i] === _dateCollection[dateService.getDate().index]) {
+        today = i;
+        break;
+      }
     }
-    return Math.round(avgPrice / 30 * 100) / 100;
+    var currentPrice = Number(_stocks[symbol][_stockDates[symbol][today]].Close);
+    var oldPrice = Number(_stocks[symbol][_stockDates[symbol][today - 1]].Close);
+    return Math.round((currentPrice - oldPrice) * 100) / 100;
   };
 
   stub.currentPrice = function(symbol) {

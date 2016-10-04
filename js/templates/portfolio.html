@@ -1,1 +1,15 @@
-portfolio.html
+<table>
+  <tr>
+    <th>Symbol</th>
+    <th>Quantity</th>
+    <th>Cost Basis</th>
+    <th>Current Value</th>
+    <th>Profit/Loss</th>
+    <th>Current Price</th>
+    <th>1D</th>
+    <th>7D</th>
+    <th>30D</th>
+  </tr>
+
+  <tr portfolio-list ng-repeat="(symbol, stockHistory) in portfolio" stock="stockHistory" symbol="symbol"></tr>
+</table>

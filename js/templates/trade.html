@@ -1,1 +1,30 @@
-trade.html
+<div class="col-md-6">
+  <form>
+    <div class="form-group">
+      <label>Symbol</label>
+      <input type="text" class="form-control" ng-model="name">
+    </div>
+    <div class="form-group">
+      <label>Buy/Sell</label>
+      <select ng-model="transaction">
+        <option value="buy">Buy</option>
+        <option value="sell">Sell</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Quantity</label>
+      <input type="text" class="form-control" ng-model="quantity">
+    </div>
+    <div class="form-group">
+      <label>Date</label>
+      <input type="text" class="form-control" ng-model="date">
+    </div>
+    <p>Price {{ price }}</p>
+    <p>Cost {{ cost }}</p>
+    <input type="submit" class="btn btn-primary" ng-click="buyOrSell()">
+  </form>
+</div>
+<div class="col-md-6">
+  <p>Cash Available: {{ currentCash.total }}</p>
+  <p>Order Status: {{ validity }}</p>
+</div>

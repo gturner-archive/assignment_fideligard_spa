@@ -9,12 +9,15 @@ app.controller('DateCtrl', ["$scope", 'date', 'dateService', 'dates', function($
     dateService.setDay(day);
   };
 
-  $scope.changeDate = function(date){
-  	dateService.setDay(date);
-  	$scope.editing = !$scope.editing;
+  $scope.changeDate = function(day) {
+    var index = dates.indexOf(day);
+    if (index > -1) {
+      $scope.newDate = index
+      dateService.setDay(index);
+    	$scope.editing = !$scope.editing;
+    }
   };
 
-  //in order for the slider to follow when the date is manually changed, need to turn the date back into a day value and add that to the slider
-  //make it more obvious that you can click on the date to change it
+  //Still need to make date input update on change in date
 
 }]);
